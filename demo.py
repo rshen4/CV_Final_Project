@@ -1,5 +1,8 @@
+# Found here https://stackoverflow.com/questions/29655679/access-kinect-depth-data-with-pykinect
+
 import thread
 import pygame
+import pprint
 from pykinect import nui
 
 DEPTH_WINSIZE = 320,240
@@ -9,11 +12,18 @@ screen = None
 
 tmp_s = pygame.Surface(DEPTH_WINSIZE, 0, 16)
 
+def data_depth_frame_ready(frame):
+    frame.image.copy_bits(tmp_s._pixels_address)
+
+    arr2d = (pygame.surfarray.pixels2d(tmp_s) >> 3) & 4095
+    # arr2d[x,y] is the actual depth measured in mm at (x,y)
+
 
 def depth_frame_ready(frame):
     with screen_lock:
         frame.image.copy_bits(tmp_s._pixels_address)
         arr2d = (pygame.surfarray.pixels2d(tmp_s) >> 7) & 255
+        pprint.pprint(arr2d)
         pygame.surfarray.blit_array(screen, arr2d)
 
         pygame.display.update()
