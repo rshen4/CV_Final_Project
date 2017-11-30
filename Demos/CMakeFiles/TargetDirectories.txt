@@ -1,0 +1,2 @@
+/home/morris/libfreenect/wrappers/python/CMakeFiles/edit_cache.dir
+/home/morris/libfreenect/wrappers/python/CMakeFiles/rebuild_cache.dir
