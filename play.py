@@ -19,7 +19,8 @@ def main():
         color_frame = np.array(get_video())
         #only works to about 90
 
-        hand_position, hand_depth = find_min_idx(depth_frame)
+        hand_position = find_min_idx(depth_frame)
+        hand_depth = depth_frame[hand_position[0], hand_position[1]]
 
         #radius_hand = 50
         #cv2.circle(depth_frame, closest, radius_hand, (0,255,0), 4)
@@ -32,8 +33,7 @@ def main():
         #cv2.circle(depth_frame, (body_coord_row, body_coord_col), radius_body, (255,0,0),4)
         #cv2.imshow('Depth', depth_frame)
 
-        depth_scale = 500
-        hand_position_3D = position_3D(hand_position, hand_depth/depth_scale, body_frame)
+        hand_position_3D = position_3D(hand_position, hand_depth, body_frame)
         # make this a ros topic for baxter to receive, scale z (depth) into a suitable value, current scale is 500
         print hand_position_3D
 
@@ -53,7 +53,7 @@ def get_video():
 def find_min_idx(x):
     k = x.argmin()
     ncol = x.shape[1]
-    return (k%ncol, k/ncol), k
+    return (k%ncol, k/ncol)
 
 
 if __name__ == "__main__":
